@@ -38,7 +38,7 @@ public class SimpleBlockchain {
 
         
          // Adds a new block to the end of the chain. This is now an O(n) operation.
-         ///
+         
         public void addBlock(String id, String data, String type) {
             BlockNode newBlock = new BlockNode(id, data, type);
             if (delBlock == null) {
@@ -56,7 +56,7 @@ public class SimpleBlockchain {
 
         
          // Finds and deletes a block by its ID. Requires O(n) traversal.
-         ///
+         
         public void deleteBlock(String id) {
             BlockNode current = delBlock;
             while (current != null && !current.blockId.equals(id)) {
@@ -84,7 +84,7 @@ public class SimpleBlockchain {
 
         
          // Finds and prints a block by its ID. Requires O(n) traversal.
-         ///
+         
         public void findBlock(String id) {
             BlockNode current = delBlock;
             while (current != null && !current.blockId.equals(id)) {
@@ -100,15 +100,17 @@ public class SimpleBlockchain {
 
         
          // Sorts the chain by partitioning it into two sub-lists and merging them.
-         ///
+         
         public void sortChain(String type) {
             if (delBlock == null) {
                  System.out.printf("Blockchain sorted with %s blocks first.\n", type);
                 return;
             }
 
-            BlockNode sortedHead = null, sortedTail = null;
-            BlockNode otherHead = null, otherTail = null;
+            BlockNode sortedHead = null;
+            BlockNode sortedTail = null;
+            BlockNode otherHead = null; 
+            BlockNode otherTail = null;
 
             BlockNode current = delBlock;
             while (current != null) {
@@ -149,7 +151,7 @@ public class SimpleBlockchain {
             System.out.printf("Blockchain sorted with %s blocks first.\n", type);
         }
 
-        /////
+        
          // Prints the chain from delBlock to the end.
          ///
         public void printChain() {
@@ -187,35 +189,57 @@ public class SimpleBlockchain {
         }
     }
 
-    /////
+    
      // Main driver method for the blockchain simulation.
-     ///
+     //
     public static void main(String[] args) {
-        Scanner inputScanner = new Scanner(System.in);
-        BlockchainLedger ledger = new BlockchainLedger();
-        
-        int n = Integer.parseInt(inputScanner.nextLine());
+        Scanner sc = new Scanner(System.in);
+        Blockchain chain = new Blockchain();
 
+        int n = Integer.parseInt(sc.nextLine());
         for (int i = 0; i < n; i++) {
-            String[] command = inputScanner.nextLine().split(" ");
-            String operation = command[0];
+            String[] parts = sc.nextLine().trim().split(" ");
+            String op = parts[0];
 
-            if (operation.equals("A")) {
-                ledger.addBlock(command[1], command[2], command[3]);
-            } else if (operation.equals("D")) {
-                ledger.deleteBlock(command[1]);
-            } else if (operation.equals("P")) {
-                ledger.printChain();
-            } else if (operation.equals("R")) {
-                ledger.printChainReverse();
-            } else if (operation.equals("S")) {
-                ledger.sortChainByType(command[1]);
-            } else if (operation.equals("F")) {
-                ledger.findBlock(command[1]);
-            } else {
-                System.out.println("Unknown operation: " + operation);
+            switch (op) {
+                case "A":
+                    if (parts.length == 4) {
+                        chain.addBlock(parts[1], parts[2], parts[3]);
+                    } else {
+                        System.out.println("Invalid input for Add.");
+                    }
+                    break;
+                case "D":
+                    if (parts.length == 2) {
+                        chain.deleteBlock(parts[1]);
+                    } else {
+                        System.out.println("Invalid input for Delete.");
+                    }
+                    break;
+                case "F":
+                    if (parts.length == 2) {
+                        chain.findBlock(parts[1]);
+                    } else {
+                        System.out.println("Invalid input for Find.");
+                    }
+                    break;
+                case "P":
+                    chain.printChain();
+                    break;
+                case "R":
+                    chain.printInReverse();
+                    break;
+                case "S":
+                    if (parts.length == 2) {
+                        chain.sortByType(parts[1]);
+                    } else {
+                        System.out.println("Invalid input for Sort.");
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid operation.");
             }
         }
-        inputScanner.close();
+        sc.close();
     }
 }
