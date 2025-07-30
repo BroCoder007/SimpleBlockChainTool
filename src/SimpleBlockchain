@@ -101,7 +101,7 @@ public class SimpleBlockchain {
         
          // Sorts the chain by partitioning it into two sub-lists and merging them.
          
-        public void sortChain(String type) {
+        public void sortByType(String type) {
             if (delBlock == null) {
                  System.out.printf("Blockchain sorted with %s blocks first.\n", type);
                 return;
@@ -166,10 +166,10 @@ public class SimpleBlockchain {
             }
         }
 
-        /////
+        
          // Prints the chain in reverse. Requires finding the end first.
          ///
-        public void printChainReverse() {
+        public void printInReverse() {
             if (delBlock == null) {
                 System.out.println("Blockchain is empty");
                 return;
